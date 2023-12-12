@@ -1,5 +1,6 @@
-CREATE DATABASE bd2_practica1;
 DROP DATABASE bd2_practica1;
+CREATE DATABASE bd2_practica1;
+
 
 USE bd2_practica1;
 
