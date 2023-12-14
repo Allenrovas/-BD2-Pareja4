@@ -1,7 +1,13 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
+import menu from "./menu.js";
+import clear from "clear";
 
 const login = async () => {
+
+    clear();
+    console.log(chalk.bgBlue.bold('\n------------------ Iniciar Sesión ------------------\n'));
+
     const { username, password } = await inquirer.prompt([
         {
             type: "input",
@@ -15,7 +21,10 @@ const login = async () => {
         },
     ]);
 
+    clear();
     console.log(chalk.blue.bold(`Bienvenido ${username}`));
+    await menu();
+
 };
 
 export default login;

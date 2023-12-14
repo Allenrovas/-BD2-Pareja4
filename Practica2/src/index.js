@@ -2,13 +2,16 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import login from "./controllers/views/login.js";
 import registro from "./controllers/views/registro.js";
+import { mainTitle } from "./config/constants.js";
 import clear from "clear";
 
-clear();
-console.log(chalk.bgBlue.bold('------------------- CLI HOSPITAL -------------------'));
-console.log(chalk.bgBlueBright.bold('-------------------- Bienvenido --------------------\n'));
 
-const main = async () => {
+export const main = async () => {
+
+    clear();
+    console.log(chalk.blue.bold(mainTitle));
+    console.log(chalk.bgBlue.bold('--------------------- Bienvenido ----------------------\n'));
+
     const { option } = await inquirer.prompt([
         {
             type: "list",
@@ -24,7 +27,7 @@ const main = async () => {
                     value: 2,
                 },
                 {
-                    name: `${chalk.blue.bold(">")} Salir`,
+                    name: `${chalk.blue.bold("<")} Salir`,
                     value: 3,
                 }
             ],
@@ -33,17 +36,13 @@ const main = async () => {
 
     switch (option) {
         case 1:
-            clear();
-            console.log(chalk.bgBlue.bold('\n------------------ Iniciar Sesión ------------------\n'));
             await login();
             break;
         case 2:
-            clear();
-            console.log(chalk.bgBlue.bold('----------------- Registrar usuario ----------------\n'));
             await registro();
             break;
         case 3:
-            console.log("Salir");
+            console.log(chalk.red.bold("Saliendo..."));
             break;
     }
 };
