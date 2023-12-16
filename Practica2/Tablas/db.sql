@@ -1,23 +1,23 @@
 CREATE DATABASE bd2_practica2;
+
 USE bd2_practica2;
 
 CREATE TABLE habitacion (
-    idHabitacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    habitacion VARCHAR(50) NOT NULL
+	idHabitacion INT AUTO_INCREMENT PRIMARY KEY,
+    habitacion VARCHAR(50)
 );
 
+
 CREATE TABLE paciente (
-    idPaciente INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    edad INT NOT NULL,
-    genero VARCHAR(20),
-    diagnotico VARCHAR(50)
+	idPaciente INT AUTO_INCREMENT PRIMARY KEY,
+    edad INT,
+    genero VARCHAR(20)
 );
 
 CREATE TABLE log_actividad (
 	id_log_actividad INT AUTO_INCREMENT PRIMARY KEY,
-	timestampx TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    accion VARCHAR(255) NOT NULL,
-    usuario_logueado VARCHAR(255) NOT NULL,
+	timestampx VARCHAR(100),
+    actividad VARCHAR(500),
     idHabitacion INT,
     idPaciente INT,
     FOREIGN KEY (idhabitacion) REFERENCES habitacion(idHabitacion),
@@ -25,11 +25,23 @@ CREATE TABLE log_actividad (
 );
 
 CREATE TABLE log_habitacion (
-	timestampx TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    usuario_logueado VARCHAR(255) NOT NULL,
-    accion VARCHAR(255) NOT NULL,
+	timestampx VARCHAR(100),
     statusx VARCHAR(45) NOT NULL,
-    idHabitacion INT AUTO_INCREMENT,
+    idHabitacion INT,
     PRIMARY KEY (timestampx, idHabitacion),
     FOREIGN KEY (idhabitacion) REFERENCES habitacion(idHabitacion)
+);
+
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_usuario VARCHAR(100),
+    contrasena VARCHAR(100),
+    rol VARCHAR(50)
+);
+
+CREATE TABLE log_general (
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    usuario_logueado VARCHAR(100),
+    accion VARCHAR(255),
+    fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
