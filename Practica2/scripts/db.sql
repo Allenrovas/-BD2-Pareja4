@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS bd2_practica2;
 CREATE DATABASE bd2_practica2;
 
 USE bd2_practica2;
@@ -34,12 +35,12 @@ CREATE TABLE log_habitacion (
 
 CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_usuario VARCHAR(100),
+    usuario VARCHAR(100),
     contrasena VARCHAR(100),
     rol VARCHAR(50)
 );
 
-CREATE TABLE log_general (
+CREATE TABLE log_operaciones_bd (
     id_log INT PRIMARY KEY AUTO_INCREMENT,
     usuario_logueado VARCHAR(100),
     accion VARCHAR(255),
