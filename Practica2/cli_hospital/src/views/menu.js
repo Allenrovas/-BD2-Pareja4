@@ -1,16 +1,17 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { menuTitle } from "../config/constants.js";
+import { menuTitle, session } from "../config/constants.js";
 import clear from "clear";
 
 import { main } from "../index.js";
 import menuCrud from "./crud.js";
+import { poolLog } from "../db/connectionLog.js";
 
-const menu = async () => {
+const menu = async (connection) => {
 
     clear();
     console.log(chalk.blue.bold(menuTitle));
-    console.log(chalk.bgBlue.bold('--------------- Bienvenido: Daniel ----------------\n'));
+    console.log(chalk.bgBlue.bold(`--------------- Bienvenido: ${session.user} ----------------\n`));
 
     const { option } = await inquirer.prompt([
         {
@@ -92,7 +93,10 @@ const menu = async () => {
             if (confirmLogout.confirm) {
                 clear();
                 console.log(chalk.bgBlue.bold('\n----------------- Cerrar sesión -----------------\n'));
-                clear();
+                if (connection) {
+                    await connection.end();
+                }
+                await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [session.user, `Cerró la conexión a la base de datos`]);
                 await main();
             } else {
                 clear();

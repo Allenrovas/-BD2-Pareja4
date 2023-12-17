@@ -5,6 +5,8 @@ import registro from "./views/registro.js";
 import { mainTitle } from "./config/constants.js";
 import clear from "clear";
 
+import { poolLog } from "./db/connectionLog.js";
+
 
 export const main = async () => {
 
@@ -43,6 +45,10 @@ export const main = async () => {
             break;
         case 3:
             console.log(chalk.red.bold("Saliendo..."));
+            if(poolLog)
+            {
+                await poolLog.end();
+            }
             break;
     }
 };
