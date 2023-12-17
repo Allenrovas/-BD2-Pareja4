@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import login from "./controllers/views/login.js";
-import registro from "./controllers/views/registro.js";
+import login from "./views/login.js";
+import registro from "./views/registro.js";
 import { mainTitle } from "./config/constants.js";
 import clear from "clear";
 

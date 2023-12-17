@@ -42,7 +42,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE log_operaciones_bd (
     id_log INT PRIMARY KEY AUTO_INCREMENT,
-    usuario_logueado VARCHAR(100),
+    usuario VARCHAR(100),
     accion VARCHAR(255),
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

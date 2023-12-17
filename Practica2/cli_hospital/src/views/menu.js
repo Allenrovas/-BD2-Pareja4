@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { menuTitle } from "../../config/constants.js";
+import { menuTitle } from "../config/constants.js";
 import clear from "clear";
 
-import { main } from "../../index.js";
+import { main } from "../index.js";
 import menuCrud from "./crud.js";
 
 const menu = async () => {

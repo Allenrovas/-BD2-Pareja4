@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 export const userRoles = {
     ASISTENTE: 1,
     DOCTOR: 2,
@@ -32,3 +34,12 @@ export const menuTitle = `
                |\\/ |  _|   .  |  |  |   
               _|  _| ___| _|\\_| \\__/
 `;
+
+export const encriptarPassword = (password) => {
+    const salt = bcrypt.genSaltSync(4);
+    return bcrypt.hashSync(password, salt);
+}
+
+export const validarPassword = (password, hash) => {
+    return bcrypt.compareSync(password, hash);
+}
