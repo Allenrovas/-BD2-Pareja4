@@ -4,6 +4,7 @@ import clear from "clear";
 
 import menu from "./menu.js";
 import consulta from "./consultas.js";
+import update from "./updates.js";
 
 const menuCrud = async (optionCRUD,connection) => {
 
@@ -67,26 +68,43 @@ const menuCrud = async (optionCRUD,connection) => {
         case 1:
             clear();
             console.log(chalk.bgBlue.bold('\n------------------- PACIENTES -------------------\n'));
-            await consulta(connection, "paciente");
+            if (optionCRUD == 1) {
+                await consulta(connection, "paciente");
+            }else if (optionCRUD == 2) {
+                await update(connection, "paciente");
+                
+            }
             break;
         case 2:
             clear();
             console.log(chalk.bgBlue.bold('\n----------------- HABITACIONES ------------------\n'));
-            await consulta(connection, "habitacion");
+            if (optionCRUD == 1) {
+                consulta(connection, "habitacion");
+            }else if (optionCRUD == 2) {
+                await update(connection, "habitacion");
+            }
             break;
         case 3:
             clear();
             console.log(chalk.bgBlue.bold('\n----------------- LOG ACTIVIDAD -----------------\n'));
-            await consulta(connection, "log_actividad");
+            if (optionCRUD == 1) {
+                await consulta(connection, "log_actividad");
+            }else if (optionCRUD == 2) {
+                await update(connection, "log_actividad");
+            }
             break;
         case 4:
             clear();
             console.log(chalk.bgBlue.bold('\n---------------- LOG HABITACION -----------------\n'));
-            await consulta(connection, "log_habitacion");
+            if (optionCRUD == 1) {
+                await consulta(connection, "log_habitacion");
+            } else if (optionCRUD == 2) {
+                await update(connection, "log_habitacion");
+            }
             break;
         case 5:
-            menu();
-            break;
+            clear();
+            return await menu(connection);
     }
 };
 

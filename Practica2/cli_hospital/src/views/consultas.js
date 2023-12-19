@@ -9,8 +9,11 @@ import verificarPermisos from "./permisos.js";
 
 const consulta = async (connection, tabla) => {
 
+    let permisos = true;
 
-    const permisos = await verificarPermisos(tabla, 'SELECT');
+    if (session.role !== "Administrador") {
+        permisos = await verificarPermisos(tabla, 'SELECT');
+    }
 
     if(!permisos)
     {
@@ -25,7 +28,7 @@ const consulta = async (connection, tabla) => {
                 message: "Presione enter para continuar...",
             },
         ]);
-        await menuCrud(1,connection);
+        return await menuCrud(1,connection);
     }
 
     //Realizar consulta de los ultimos 25 registros
@@ -67,7 +70,7 @@ const consulta = async (connection, tabla) => {
     ]);
     //Limpiar la consola
     clear();
-    await menuCrud(1,connection);
+    return await menuCrud(1,connection);
 
 
 };

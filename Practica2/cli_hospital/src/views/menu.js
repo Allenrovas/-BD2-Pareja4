@@ -67,10 +67,10 @@ const menu = async (connection) => {
             await menuCrud(option,connection);
             break;
         case 3:
-            await menuCrud(option);
+            await menuCrud(option,connection);
             break;
         case 4:
-            await menuCrud(option);
+            await menuCrud(option,connection);
             break;
         case 5:
             await crearBackup(connection);
