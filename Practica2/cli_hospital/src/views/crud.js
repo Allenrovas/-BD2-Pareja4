@@ -3,8 +3,9 @@ import inquirer from "inquirer";
 import clear from "clear";
 
 import menu from "./menu.js";
+import consulta from "./consultas.js";
 
-const menuCrud = async (optionCRUD) => {
+const menuCrud = async (optionCRUD,connection) => {
 
     clear();
     switch (optionCRUD) {
@@ -66,27 +67,29 @@ const menuCrud = async (optionCRUD) => {
         case 1:
             clear();
             console.log(chalk.bgBlue.bold('\n------------------- PACIENTES -------------------\n'));
-            await menuCrud();
+            await consulta(connection, "paciente");
             break;
         case 2:
             clear();
             console.log(chalk.bgBlue.bold('\n----------------- HABITACIONES ------------------\n'));
-            await menuCrud();
+            await consulta(connection, "habitacion");
             break;
         case 3:
             clear();
             console.log(chalk.bgBlue.bold('\n----------------- LOG ACTIVIDAD -----------------\n'));
-            await menuCrud();
+            await consulta(connection, "log_actividad");
             break;
         case 4:
             clear();
             console.log(chalk.bgBlue.bold('\n---------------- LOG HABITACION -----------------\n'));
-            await menuCrud();
+            await consulta(connection, "log_habitacion");
             break;
         case 5:
             menu();
             break;
     }
 };
+
+
 
 export default menuCrud;

@@ -59,7 +59,7 @@ const menu = async (connection) => {
 
     switch (option) {
         case 1:
-            await menuCrud(option);
+            await menuCrud(option,connection);
             break;
         case 2:
             await menuCrud(option);
@@ -77,6 +77,7 @@ const menu = async (connection) => {
             await menuCrud(option);
             break;
         case 7:
+            
             await menuCrud(option);
             break;
         case 8:
