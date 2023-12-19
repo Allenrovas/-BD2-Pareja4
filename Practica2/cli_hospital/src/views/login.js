@@ -39,6 +39,35 @@ const auth = async(username, password) => {
         session.user = username;
         session.password = password;
 
+        const permissions = await connection.query('SHOW GRANTS FOR current_user()');
+
+        const UserPermissions = permissions[0];
+
+        const rolUser = UserPermissions[UserPermissions.length - 1];
+
+        const rolString = rolUser['Grants for ' + username + '@localhost'];
+
+        const match = rolString.match(/GRANT `([^`]+)`@/);
+
+        session.role = match ? match[1] : null;
+
+        if (session.role === 'Asistente') {
+            session.permissions = {
+                "habitacion": ["SELECT"],
+                "paciente": ["SELECT", "UPDATE"]
+            };
+        } else if (session.role === 'Doctor') {
+            session.permissions = {
+                "paciente": ["SELECT"]
+            };
+        } else if (session.role === 'Soporte') {
+            session.permissions = {
+                "log_actividad": ["SELECT", "INSERT", "UPDATE"],
+                "log_habitacion": ["SELECT", "INSERT", "UPDATE"]
+            }
+
+        } 
+
         await menu(connection);
 
     } catch (e) {

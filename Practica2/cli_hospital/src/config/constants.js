@@ -20,7 +20,8 @@ export const menuOptions = {
 export const session = {
     user: null,
     role: null,
-    passwordq: null
+    password: null,
+    permissions: null
 };
 
 export const mainTitle = `
