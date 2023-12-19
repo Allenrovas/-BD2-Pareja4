@@ -6,6 +6,7 @@ import menu from "./menu.js";
 import consulta from "./consultas.js";
 import update from "./updates.js";
 import insert from "./inserts.js";
+import deletes from "./deletes.js";
 
 const menuCrud = async (optionCRUD,connection) => {
 
@@ -75,6 +76,8 @@ const menuCrud = async (optionCRUD,connection) => {
                 await update(connection, "paciente");
             }else if (optionCRUD == 3) {
                 await insert(connection, "paciente");
+            }else if (optionCRUD == 4) {
+                await deletes(connection, "paciente");
             }
             break;
         case 2:
@@ -86,6 +89,8 @@ const menuCrud = async (optionCRUD,connection) => {
                 await update(connection, "habitacion");
             }else if (optionCRUD == 3) {
                 await insert(connection, "habitacion");
+            }else if (optionCRUD == 4) {
+                await deletes(connection, "habitacion");
             }
             break;
         case 3:
@@ -95,8 +100,10 @@ const menuCrud = async (optionCRUD,connection) => {
                 await consulta(connection, "log_actividad");
             }else if (optionCRUD == 2) {
                 await update(connection, "log_actividad");
-            } else if (optionCRUD == 3) {
+            }else if (optionCRUD == 3) {
                 await insert(connection, "log_actividad");
+            }else if (optionCRUD == 4) {
+                await deletes(connection, "log_actividad");
             }
             break;
         case 4:
@@ -104,10 +111,12 @@ const menuCrud = async (optionCRUD,connection) => {
             console.log(chalk.bgBlue.bold('\n---------------- LOG HABITACION -----------------\n'));
             if (optionCRUD == 1) {
                 await consulta(connection, "log_habitacion");
-            } else if (optionCRUD == 2) {
+            }else if (optionCRUD == 2) {
                 await update(connection, "log_habitacion");
-            } else if (optionCRUD == 3) {
+            }else if (optionCRUD == 3) {
                 await insert(connection, "log_habitacion");
+            }else if (optionCRUD == 4) {
+                await deletes(connection, "log_habitacion");
             }
             break;
         case 5:
