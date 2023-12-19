@@ -5,6 +5,7 @@ import clear from "clear";
 import menu from "./menu.js";
 import consulta from "./consultas.js";
 import update from "./updates.js";
+import insert from "./inserts.js";
 
 const menuCrud = async (optionCRUD,connection) => {
 
@@ -72,7 +73,8 @@ const menuCrud = async (optionCRUD,connection) => {
                 await consulta(connection, "paciente");
             }else if (optionCRUD == 2) {
                 await update(connection, "paciente");
-                
+            }else if (optionCRUD == 3) {
+                await insert(connection, "paciente");
             }
             break;
         case 2:
@@ -82,6 +84,8 @@ const menuCrud = async (optionCRUD,connection) => {
                 consulta(connection, "habitacion");
             }else if (optionCRUD == 2) {
                 await update(connection, "habitacion");
+            }else if (optionCRUD == 3) {
+                await insert(connection, "habitacion");
             }
             break;
         case 3:
@@ -91,6 +95,8 @@ const menuCrud = async (optionCRUD,connection) => {
                 await consulta(connection, "log_actividad");
             }else if (optionCRUD == 2) {
                 await update(connection, "log_actividad");
+            } else if (optionCRUD == 3) {
+                await insert(connection, "log_actividad");
             }
             break;
         case 4:
@@ -100,6 +106,8 @@ const menuCrud = async (optionCRUD,connection) => {
                 await consulta(connection, "log_habitacion");
             } else if (optionCRUD == 2) {
                 await update(connection, "log_habitacion");
+            } else if (optionCRUD == 3) {
+                await insert(connection, "log_habitacion");
             }
             break;
         case 5:
