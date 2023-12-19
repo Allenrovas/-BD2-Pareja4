@@ -7,6 +7,7 @@ import { main } from "../index.js";
 import menuCrud from "./crud.js";
 import { poolLog } from "../db/connectionLog.js";
 import crearBackup from "./crearBackup.js";
+import verBackups from "./verBakcups.js";
 
 const menu = async (connection) => {
 
@@ -74,7 +75,7 @@ const menu = async (connection) => {
             await crearBackup(connection);
             break;
         case 6:
-            await menuCrud(option);
+            await verBackups(connection);
             break;
         case 7:
             
