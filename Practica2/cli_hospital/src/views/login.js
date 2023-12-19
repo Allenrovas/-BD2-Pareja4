@@ -35,6 +35,24 @@ const auth = async(username, password) => {
 
     try{
 
+        const verificarUsuario = await poolLog.query('SELECT USER FROM mysql.user WHERE USER = ?', [username]);
+
+        if(verificarUsuario[0].length === 0)
+        {
+            console.log(chalk.red.bold("  > ERROR: El usuario no existe."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [username, `Intentó iniciar sesión con un usuario que no existe`]);
+            
+            await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "continue",
+                    message: "Presione enter para continuar...",
+                },
+            ]);
+
+            await main();
+        }
+
         connection = await getConnection(username, password);
         session.user = username;
         session.password = password;
@@ -81,7 +99,7 @@ const auth = async(username, password) => {
                 {
                     type: "input",
                     name: "continue",
-                    message: "Presione cualquier tecla para continuar...",
+                    message: "Presione enter para continuar...",
                 },
             ]);
 
