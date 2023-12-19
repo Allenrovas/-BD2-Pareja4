@@ -159,11 +159,48 @@ Esta pantalla mostrara el menú principal de la aplicación, en este menú se pu
 
 ### 📌 Pantalla de consultas
 
+
+<div align="center"><img src="./images/consultas.jpeg"/></div>
+
+Para esta opción los usuarios con los permisos de tipo 'SELECT' pueden realizar consultas a la base de datos, para esto se debe seleccionar la opción de consultas y posteriormente se mostrará un submenú con las opciones de consultas que se pueden realizar.
+
+Teniendo como resultado la siguiente pantalla:
+
+<div align="center"><img src="./images/c1.jpeg"/></div>
+
 ### 📌 Pantalla de actualización de registros
+
+<div align="center"><img src="./images/updates.jpeg"/></div>
+
+
+Para esta opción los usuarios con los permisos de tipo 'UPDATE' pueden actualizar registros de la base de datos, para esto se debe seleccionar la opción de actualizar registros y posteriormente se mostrará un submenú con las opciones de actualización de registros que se pueden realizar.
+
+Teniendo como resultado la siguiente pantalla:
+
+<div align="center"><img src="./images/u1.jpeg"/></div>
 
 ### 📌 Pantalla de creación de registros
 
+<div align="center"><img src="./images/registros.jpeg"/></div>
+
+Para esta opción los usuarios con los permisos de tipo 'INSERT' pueden crear registros en la base de datos, para esto se debe seleccionar la opción de crear registros y posteriormente se mostrará un submenú con las opciones de creación de registros que se pueden realizar.
+
+Teniendo como resultado la siguiente pantalla:
+
+<div align="center"><img src="./images/r1.jpeg"/></div>
+
+
 ### 📌 Pantalla de eliminación de registros
+
+<div align="center"><img src="./images/d1.jpeg"/></div>
+
+Para esta opción los usuarios con los permisos de tipo 'DELETE' pueden eliminar registros de la base de datos, para esto se debe seleccionar la opción de eliminar registros y posteriormente se mostrará un submenú con las opciones de eliminación de registros que se pueden realizar.
+
+Teniendo como resultado la siguiente pantalla:
+
+<div align="center"><img src="./images/deletes.jpeg"/></div>
+
+
 
 ### 📌 Pantalla de respaldos
 

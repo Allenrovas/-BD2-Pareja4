@@ -34,7 +34,6 @@ const deletes = async (connection, tabla) => {
     }
 
 
-    console.log(chalk.bgBlue.bold("\n---------------- ELIMINAR REGISTROS ----------------"));
 
     const id = await inquirer.prompt([
         {
