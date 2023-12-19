@@ -1,9 +1,8 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { menuTitle, session } from "../config/constants.js";
+import {  session } from "../config/constants.js";
 import clear from "clear";
 
-import { main } from "../index.js";
 import menuCrud from "./crud.js";
 import { poolLog } from "../db/connectionLog.js";
 import verificarPermisos from "./permisos.js";

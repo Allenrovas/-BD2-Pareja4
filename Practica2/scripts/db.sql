@@ -26,10 +26,10 @@ CREATE TABLE log_actividad (
 );
 
 CREATE TABLE log_habitacion (
-	timestampx VARCHAR(100),
+	id_log_habitacion INT AUTO_INCREMENT PRIMARY KEY,
+	timestampx VARCHAR(100) NOT NULL,
     statusx VARCHAR(45) NOT NULL,
-    idHabitacion INT,
-    PRIMARY KEY (timestampx, idHabitacion),
+    idHabitacion INT NOT NULL,
     FOREIGN KEY (idhabitacion) REFERENCES habitacion(idHabitacion)
 );
 
