@@ -46,3 +46,5 @@ CREATE TABLE log_operaciones_bd (
     accion VARCHAR(255),
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO usuarios (usuario, contrasena, rol) VALUES ('admin', '$2b$04$BNiW2r2bofECNzp4HFCtfej5JlqXrqD.Afrc/oVa4hP/ZdykAaLcS', 'Administrador');

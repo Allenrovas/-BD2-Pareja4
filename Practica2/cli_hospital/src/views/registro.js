@@ -93,6 +93,24 @@ const registrar = async (username, password, rolUser, admin, passAdmin) => {
     let connection;
 
     try {
+
+        const verificarUser = await poolLog.query('SELECT USER FROM mysql.user WHERE USER = ?', [username]);
+
+        if(verificarUser[0].length > 0)
+        {
+            console.log(chalk.red.bold("  > ERROR: El usuario que intenta registrar ya existe."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `El usuario '${username}' que intentó registrar ya existe`]);
+            return;
+        }
+
+        const verificarAdmin = await poolLog.query('SELECT USER FROM mysql.user WHERE USER = ?', [admin]);
+
+        if(verificarAdmin[0].length === 0)
+        {
+            console.log(chalk.red.bold("  > ERROR: El usuario administrador ingresado no existe."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `El usuario administrador '${admin}' no existe, intentó registrar un usuario`]);
+            return;
+        }
         
         connection  = await getConnection(admin, passAdmin);
 
@@ -127,16 +145,34 @@ const registrar = async (username, password, rolUser, admin, passAdmin) => {
             console.log(chalk.red.bold("  > ERROR: Credenciales del usuario administrador incorrectas."));
             await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Intentó registrar un usuario, credenciales de administrador incorrectas`]);
         }
+        else if(e.code === 'ER_DBACCESS_DENIED_ERROR')
+        {
+            console.log(chalk.red.bold("  > ERROR: Credenciales del usuario administrador incorrectas."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Intentó registrar un usuario, credenciales de administrador incorrectas`]);
+        }
+        else if(e.code === 'ER_SPECIFIC_ACCESS_DENIED_ERROR')
+        {
+            console.log(chalk.red.bold("  > ERROR: Este usuario no tiene permisos de administrador."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Intentó registrar un usuario, este usuario no tiene permisos de administrador`]);
+        }
+        else if(e.code === 'ER_TABLEACCESS_DENIED_ERROR')
+        {
+            console.log(chalk.red.bold("  > ERROR: Este usuario no tiene permisos de administrador."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Intentó registrar un usuario, este usuario no tiene permisos de administrador`]);
+        }
+        else
+        {
+            console.log(chalk.red.bold("  > ERROR: No se pudo registrar el usuario, error interno."));
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Intentó registrar un usuario, no se pudo registrar el usuario, error interno`]);
+        }
         // console.log(e.code);
     } finally {
         if(connection)
         {
-            await connection.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Cerró la conexión a la base de datos`]);
+            await poolLog.query('INSERT INTO bd2_practica2.log_operaciones_bd (usuario, accion) VALUES (?, ?)', [admin, `Cerró la conexión a la base de datos`]);
             await connection.end();
         }
     }
 };
-
-
 
 export default registro;
