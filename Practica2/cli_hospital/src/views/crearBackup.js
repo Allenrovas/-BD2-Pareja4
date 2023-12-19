@@ -24,7 +24,7 @@ const crearBackup = async (connection) => {
                 message: "Presione enter para continuar...",
             },
         ]);
-        await menu(connection);
+        return await menu(connection);
     }
 
     await poolLog.query(`INSERT INTO bd2_practica2.log_operaciones_bd (accion, usuario) VALUES (?, ?)`, [`Ingresó a la opcion de realizar un respaldo`, session.user]);
@@ -72,7 +72,7 @@ const crearBackup = async (connection) => {
                         message: "Presione enter para continuar...",
                     },
                 ]);
-                await menu(connection);
+                return await menu(connection);
             } else {
                 console.log(chalk.green.bold(`  > Respaldo ${fileName} realizado con éxito.`));
                 console.log(chalk.green.bold(`  > Ruta: ${dir}/${fileName}`));
@@ -85,13 +85,13 @@ const crearBackup = async (connection) => {
                         message: "Presione enter para continuar...",
                     },
                 ]);
-                await menu(connection);
+                return await menu(connection);
             }
         });
 
     } else {
         await poolLog.query(`INSERT INTO bd2_practica2.log_operaciones_bd (accion, usuario) VALUES (?, ?)`, [`Intentó realizar un respaldo, no confirmó la acción`, session.user]);
-        await menu(connection);
+        return await menu(connection);
     }
 };
 

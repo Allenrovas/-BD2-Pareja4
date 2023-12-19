@@ -24,7 +24,7 @@ const verBackups = async (connection) => {
                 message: "Presione enter para continuar...",
             },
         ]);
-        await menu(connection);
+        return await menu(connection);
     }
 
     await poolLog.query(`INSERT INTO bd2_practica2.log_operaciones_bd (accion, usuario) VALUES (?, ?)`, [`Ingresó a la opcion de ver los respaldos realizados`, session.user]);
@@ -48,7 +48,7 @@ const verBackups = async (connection) => {
                     message: "Presione enter para continuar...",
                 },
             ]);
-            await menu(connection);
+            return await menu(connection);
         } else {
             const backups = stdout.split("\n");
             backups.pop();
@@ -68,7 +68,7 @@ const verBackups = async (connection) => {
 
             await poolLog.query(`INSERT INTO bd2_practica2.log_operaciones_bd (accion, usuario) VALUES (?, ?)`, [`Salió de la opcion de ver los respaldos realizados`, session.user]);
 
-            await menu(connection);
+            return await menu(connection);
 
         }
     });

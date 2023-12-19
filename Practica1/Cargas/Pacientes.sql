@@ -1,4 +1,4 @@
-USE bd2_practica1;
+USE bd2_practica2;
 
 LOAD DATA INFILE "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\EntradaPrac1\\Pacientes.csv"
 INTO TABLE paciente 

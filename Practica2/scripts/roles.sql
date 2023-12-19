@@ -10,7 +10,7 @@ GRANT SELECT, INSERT, UPDATE ON bd2_practica2.log_actividad TO Soporte;
 GRANT SELECT, INSERT, UPDATE ON bd2_practica2.log_habitacion TO Soporte;
 
 CREATE ROLE Administrador;
-GRANT SELECT, INSERT, UPDATE, DELETE ON bd2_practica2.* TO Administrador;
+GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE, ALTER, REFERENCES ON bd2_practica2.* TO Administrador;
 GRANT LOCK TABLES, SHOW VIEW ON bd2_practica2.* TO Administrador;
 GRANT RELOAD, SUPER, REPLICATION CLIENT, CREATE USER, PROCESS, GRANT OPTION ON *.* TO Administrador;
 

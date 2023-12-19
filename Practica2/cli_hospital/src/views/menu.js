@@ -8,6 +8,7 @@ import menuCrud from "./crud.js";
 import { poolLog } from "../db/connectionLog.js";
 import crearBackup from "./crearBackup.js";
 import verBackups from "./verBakcups.js";
+import restaurarBackup from "./restaurarBackup.js";
 
 const menu = async (connection) => {
 
@@ -63,7 +64,7 @@ const menu = async (connection) => {
             await menuCrud(option,connection);
             break;
         case 2:
-            await menuCrud(option);
+            await menuCrud(option,connection);
             break;
         case 3:
             await menuCrud(option);
@@ -78,8 +79,7 @@ const menu = async (connection) => {
             await verBackups(connection);
             break;
         case 7:
-            
-            await menuCrud(option);
+            await restaurarBackup(connection);
             break;
         case 8:
             clear();
