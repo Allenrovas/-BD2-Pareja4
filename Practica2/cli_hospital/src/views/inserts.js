@@ -31,7 +31,7 @@ const insert = async (connection, tabla) => {
         return await menuCrud(3,connection);
     }
 
-    console.log(chalk.bgBlue.bold("\n---------------- AGREGAR REGISTRO ----------------"));
+    console.log(chalk.bgBlueBright.bold("---------------- AGREGAR REGISTRO ---------------\n"));
 
     if (tabla === "paciente") {
         let { edad, genero } = await inquirer.prompt([

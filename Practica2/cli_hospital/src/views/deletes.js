@@ -15,7 +15,7 @@ const deletes = async (connection, tabla) => {
         permisos = await verificarPermisos(tabla, 'DELETE');
     }
 
-    console.log(chalk.bgBlue.bold("\n---------------- ELIMINAR REGISTROS ----------------"));
+    console.log(chalk.bgBlueBright.bold("--------------- ELIMINAR REGISTROS --------------\n"));
 
     if(!permisos)
     {

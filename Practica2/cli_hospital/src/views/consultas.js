@@ -32,7 +32,7 @@ const consulta = async (connection, tabla) => {
     }
 
     //Realizar consulta de los ultimos 25 registros
-    console.log(chalk.bgBlue.bold("\n---------------- CONSULTA ----------------"));
+    console.log(chalk.bgBlueBright.bold("------------------- CONSULTA --------------------\n"));
     
     if (tabla == "paciente") {
         var consulta = await connection.query(`SELECT * FROM bd2_practica2.paciente ORDER BY idPaciente DESC LIMIT 25`);

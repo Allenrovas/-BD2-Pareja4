@@ -69,7 +69,7 @@ const menuCrud = async (optionCRUD,connection) => {
     switch (option) {
         case 1:
             clear();
-            console.log(chalk.bgBlue.bold('\n------------------- PACIENTES -------------------\n'));
+            console.log(chalk.bgBlue.bold('\n------------------- PACIENTES -------------------'));
             if (optionCRUD == 1) {
                 await consulta(connection, "paciente");
             }else if (optionCRUD == 2) {
@@ -82,7 +82,7 @@ const menuCrud = async (optionCRUD,connection) => {
             break;
         case 2:
             clear();
-            console.log(chalk.bgBlue.bold('\n----------------- HABITACIONES ------------------\n'));
+            console.log(chalk.bgBlue.bold('\n----------------- HABITACIONES ------------------'));
             if (optionCRUD == 1) {
                 consulta(connection, "habitacion");
             }else if (optionCRUD == 2) {
@@ -95,7 +95,7 @@ const menuCrud = async (optionCRUD,connection) => {
             break;
         case 3:
             clear();
-            console.log(chalk.bgBlue.bold('\n----------------- LOG ACTIVIDAD -----------------\n'));
+            console.log(chalk.bgBlue.bold('\n----------------- LOG ACTIVIDAD -----------------'));
             if (optionCRUD == 1) {
                 await consulta(connection, "log_actividad");
             }else if (optionCRUD == 2) {
@@ -108,7 +108,7 @@ const menuCrud = async (optionCRUD,connection) => {
             break;
         case 4:
             clear();
-            console.log(chalk.bgBlue.bold('\n---------------- LOG HABITACION -----------------\n'));
+            console.log(chalk.bgBlue.bold('\n---------------- LOG HABITACION -----------------'));
             if (optionCRUD == 1) {
                 await consulta(connection, "log_habitacion");
             }else if (optionCRUD == 2) {

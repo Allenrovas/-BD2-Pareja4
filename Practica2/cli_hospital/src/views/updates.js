@@ -33,7 +33,7 @@ const update = async (connection, tabla) => {
    //Pedir el id del registro a actualizar
 
 
-    console.log(chalk.bgBlue.bold("\n---------------- ACTUALIZAR ----------------"));
+    console.log(chalk.bgBlueBright.bold("------------------ ACTUALIZAR -------------------\n"));
 
     const id = await inquirer.prompt([
         {
