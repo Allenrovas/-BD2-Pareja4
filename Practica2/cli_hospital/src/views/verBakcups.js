@@ -14,8 +14,8 @@ const verBackups = async (connection) => {
 
     if (session.role !== 'Administrador') {
         console.log(chalk.bgRed.bold("\n---------------- ACCESO DENEGADO ----------------"));
-        console.log(chalk.red.bold("\n> No tiene permisos para realizar respaldos."));
-        await poolLog.query(`INSERT INTO bd2_practica2.log_operaciones_bd (accion, usuario) VALUES (?, ?)`, [`Intentó realizar un respaldo, no tiene los permisos correspondiente a su rol`, session.user]);
+        console.log(chalk.red.bold("\n> No tiene permisos para ver los respaldos realizados."));
+        await poolLog.query(`INSERT INTO bd2_practica2.log_operaciones_bd (accion, usuario) VALUES (?, ?)`, [`Intentó ver los respaldos realizados, no tiene los permisos correspondiente a su rol`, session.user]);
         
         await inquirer.prompt([
             {
