@@ -136,3 +136,50 @@ Entre los roles que se pueden seleccionar se encuentran:
   - SELECT, UPDATE e INSERT en la tabla log_habitacion.
 
 - **Administrador:** Este rol tiene todos los privilegios de acciones como SELECT, UPDATE, INSERT, DELETE en todas las tablas de la base de datos, tambien puede realizar backups y restaurar backups y es el unico que puede crear usuarios.  Este rol no se puede seleccionar en la pantalla de registro, solo se puede seleccionar en la pantalla de creación de usuarios.
+
+### 📌 Pantalla Menú principal
+
+<div align="center"><img src="./images/menuPrincipal.png"/></div>
+
+Esta pantalla mostrara el menú principal de la aplicación, en este menú se pueden realizar las siguientes acciones:
+
+- **Consultas:** Permite realizar consultas a la base de datos, para esto se debe seleccionar la opción de consultas y posteriormente se mostrará un submenú con las opciones de consultas que se pueden realizar.
+
+- **Actualizar registros:** Permite actualizar registros de la base de datos, para esto se debe seleccionar la opción de actualizar registros y posteriormente se mostrará un submenú con las opciones de actualización de registros que se pueden realizar.
+
+- **Agregar registros:** Permite crear registros en la base de datos, para esto se debe seleccionar la opción de crear registros y posteriormente se mostrará un submenú con las opciones de creación de registros que se pueden realizar.
+
+- **Eliminar registros:** Permite eliminar registros de la base de datos, para esto se debe seleccionar la opción de eliminar registros y posteriormente se mostrará un submenú con las opciones de eliminación de registros que se pueden realizar.
+
+- **Realizar respaldo:** Permite realizar un respaldo de la base de datos, para esto se debe seleccionar la opción de realizar respaldo y posteriormente se mostrará un submenú con las opciones de respaldo que se pueden realizar.
+
+- **Ver respaldos:** Permite ver los respaldos de la base de datos, para esto se debe seleccionar la opción de ver respaldos y posteriormente se mostrará un submenú con las opciones de ver respaldos que se pueden realizar.
+
+- **Restaurar respaldo:** Permite restaurar un respaldo de la base de datos, para esto se debe seleccionar la opción de restaurar respaldo y posteriormente se mostrará un submenú con las opciones de restauración de respaldo que se pueden realizar.
+
+### 📌 Pantalla de consultas
+
+### 📌 Pantalla de actualización de registros
+
+### 📌 Pantalla de creación de registros
+
+### 📌 Pantalla de eliminación de registros
+
+### 📌 Pantalla de respaldos
+
+
+<div align="center"><img src="./images/realizarRespaldo.png"/></div>
+
+Para esta opcion solo el usuario administrador puede realizar respaldos, le preguntara si desea realizar el respaldo, si selecciona que si procedera a realizar un backup de la base de datos completo y le mostrara un mensaje de que el respaldo se realizo correctamente.
+
+### 📌 Pantalla de ver respaldos
+
+<div align="center"><img src="./images/respaldos.png"/></div>
+
+Esta opcion solo el usuario administrador puede ver los respaldos, le mostrara un listado de los respaldos que se han realizado, si selecciona un respaldo le mostrara las tablas que contiene ese respaldo.
+
+### 📌 Pantalla de restauración de respaldos
+
+<div align="center"><img src="./images/restauracion.png"/></div>
+
+Esta opcion solo el usuario administrador puede restaurar respaldos, debera seleccionar el respaldo que desea restaurar y le preguntara si desea restaurar el respaldo, si selecciona que si procedera a restaurar el respaldo y le mostrara un mensaje de que el respaldo se restauro correctamente.
