@@ -33,14 +33,14 @@ function Login() {
       if (res.status === 200) {
         const savedData = {
           id: res.data.data._id,
-          rol: res.data.data.role
-        }
-        console.log("ESTO ES LO QUE SE GUARDA:")
+          rol: res.data.data.role,
+        };
+        console.log("ESTO ES LO QUE SE GUARDA:");
         console.log(savedData);
         localStorage.setItem("data_user", JSON.stringify(savedData));
-        
+
         setLogged(true);
-        toast.success("Inicio de sesión exitoso",{
+        toast.success("Inicio de sesión exitoso", {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -51,11 +51,26 @@ function Login() {
         });
         setTimeout(() => {
           navigate("/user/home");
-        }
-        , 3000);
-
+        }, 3000);
       } else {
-        toast.error("Error al iniciar sesión - Revisa tus credenciales e Intenta de nuevo.",{
+        toast.error(
+          "Error al iniciar sesión - Revisa tus credenciales e Intenta de nuevo.",
+          {
+            position: "upper-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        "Error al iniciar sesión - Revisa tus credenciales e Intenta de nuevo.",
+        {
           position: "upper-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -63,30 +78,23 @@ function Login() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Error al iniciar sesión - Revisa tus credenciales e Intenta de nuevo.",{
-        position: "upper-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+        }
+      );
     }
   };
 
   return (
     <>
-      <Toaster/>
+      <Toaster />
       <div className="min-h-screen loginbg text-white flex justify-center fuente">
         <div className="max-w-screen-xl m-0 sm:m-10 bg-gris3 shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
-            <form className="bg-gris3"
-              onSubmit={(e) => {handleLogin(); e.preventDefault();}}
+            <form
+              className="bg-gris3"
+              onSubmit={(e) => {
+                handleLogin();
+                e.preventDefault();
+              }}
             >
               <div className="flex flex-col items-center">
                 <div style={{ width: "200px", height: "200px" }}>
@@ -94,14 +102,14 @@ function Login() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={1.5}
+                    stroke-width="1.5"
                     stroke="currentColor"
                     className="opacity-60 mx-auto text-white"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
                     />
                   </svg>
                 </div>
@@ -157,7 +165,7 @@ function Login() {
                 className="w-full h-full bg-contain bg-center bg-no-repeat"
                 style={{
                   backgroundImage:
-                    "url('https://i.postimg.cc/Fs8Z8XxD/imagen-2023-12-08-131302997.png')",
+                    "url('https://i.postimg.cc/2SbqVJV4/3568984.jpg')",
                   backgroundSize: "cover",
                   backgroundPosition: "center center",
                 }}
