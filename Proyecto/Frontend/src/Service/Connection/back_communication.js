@@ -19,14 +19,24 @@ const instance = axios.create({
 // Registro de usuario
 export const registro = async (data) => {
     console.log("desde Service: ", data);
-    const response = await instance.post('/auth/sign/up', data,
-        {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    const formData = new FormData();
 
-        console.log("desde Service: ", response);
+    formData.append('name', data.name);
+    formData.append('username', data.username);
+    formData.append('email', data.email);
+    formData.append('age', data.age);
+    formData.append('specialty', data.specialty);
+    formData.append('webSite', data.webSite);
+    formData.append('password', data.password);
+    formData.append('photo', data.photo);
+
+
+    const response = await instance.post('/auth/sign/up', formData, {}).catch((error) => {
+        console.log(error);
+        // console.log(error.response.data.message);
+        throw error;
+    });
+
     return response;
 }
 

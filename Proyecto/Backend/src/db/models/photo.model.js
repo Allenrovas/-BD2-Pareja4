@@ -2,8 +2,9 @@ import mongoose, { Schema, model } from 'mongoose';
 
 const photoSchema = new Schema(
     {
+        user: String,
         name: String,
-        content: { type: Buffer, contentType: String  }
+        content: Buffer
     },
     {
         timestamps: true
@@ -11,4 +12,6 @@ const photoSchema = new Schema(
 );
 
 
-export const Photos = model('Photos', photoSchema);
+const Photos = model('Photos', photoSchema);
+
+export default Photos;

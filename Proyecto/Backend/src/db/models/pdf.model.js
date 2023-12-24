@@ -2,8 +2,9 @@ import mongoose, { Schema, model } from 'mongoose';
 
 const pdfSchema = new Schema(
     {
+        user: String,
         name: String,
-        content: { type: Buffer, contentType: String  }
+        content: Buffer
     },
     {
         timestamps: true
@@ -11,4 +12,6 @@ const pdfSchema = new Schema(
 );
 
 
-export const PDFs = model('PDFs', pdfSchema);
+const PDFs = model('PDFs', pdfSchema);
+
+export default PDFs;

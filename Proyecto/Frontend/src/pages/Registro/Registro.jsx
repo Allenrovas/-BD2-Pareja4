@@ -7,11 +7,13 @@ import toast, { Toaster } from "react-hot-toast";
 function Registro() {
   const [account, setAccount] = useState({
     name: "",
-    lastName: "",
-    phone: "",
+    username: "",
     email: "",
-    birthDay: "",
+    age: "",
+    specialty: "",
+    webSite: "",
     password: "",
+    photo: null,
   });
 
   const handleInputChange = (e) => {
@@ -22,15 +24,6 @@ function Registro() {
     console.log(account);
   };
 
-  function parseDate(inputDate) {
-    const date = new Date(inputDate);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString();
-
-    return `${day}/${month}/${year}`;
-  }
-
   const validPassword = (password) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     return regex.test(password);
@@ -39,8 +32,6 @@ function Registro() {
   const submitRegister = async (e) => {
     e.preventDefault();
     try {
-      account.birthDay = parseDate(account.birthDay);
-      console.log(account.birthDay);
 
       if (!validPassword(account.password)) {
         toast.error(
@@ -79,9 +70,11 @@ function Registro() {
         toast.error("Error al registrar");
       }
     } catch (error) {
-      toast.error(
-        "Error al registrar - Revisa tus credenciales e Intenta de nuevo.",
-        {
+
+      console.log(error.response.data.message);
+
+      if (error.response.data.message === "User already registered") {
+        toast.error("Error al registrar - El nombre de usuario ya existe.", {
           position: "upper-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -89,8 +82,22 @@ function Registro() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        }
-      );
+        });
+
+      } else {
+        toast.error(
+          "Error al registrar - Intenta de nuevo.",
+          {
+            position: "upper-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
     }
   };
 
@@ -118,6 +125,7 @@ function Registro() {
             <p className="text-s font-normal text-white mb-7">
               Un lugar donde puedes compartir tus casos clínicos
             </p>
+
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,11 +148,12 @@ function Registro() {
                 type="text"
                 name="name"
                 id="name"
-                placeholder="Nombres"
+                placeholder="Nombre Completo"
                 required
                 style={{ width: "100%" }}
               />
             </div>
+
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -163,13 +172,14 @@ function Registro() {
               <input
                 className="pl-2 outline-none border-none bg-gris3 text-white"
                 type="text"
-                name="lastName"
-                id="lastName"
+                name="username"
+                id="username"
                 onChange={handleInputChange}
-                placeholder="Apellidos"
+                placeholder="Nombre de Usuario"
                 required
               />
             </div>
+
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -188,14 +198,16 @@ function Registro() {
 
               <input
                 className="pl-2 outline-none border-none bg-gris3 text-white"
-                type="number"
-                name="phone"
-                id="phone"
-                onChange={handleInputChange}
+                type="file"
+                accept=".jpeg, .png, .jpg"
+                name="photo"
+                id="photo"
+                onChange={e => setAccount({ ...account, photo: e.target.files[0] })}
                 placeholder="Foto de Perfil"
                 required
               />
             </div>
+
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -241,8 +253,8 @@ function Registro() {
               <input
                 className="pl-2 outline-none border-none bg-gris3 text-white"
                 type="number"
-                name="phone"
-                id="phone"
+                name="age"
+                id="age"
                 onChange={handleInputChange}
                 placeholder="Edad"
                 required
@@ -269,8 +281,8 @@ function Registro() {
                 className="pl-2 outline-none border-none bg-gris3 text-white"
                 onChange={handleInputChange}
                 type="text"
-                name="especialidad"
-                id="especialidad"
+                name="specialty"
+                id="specialty"
                 placeholder="Especialidad"
                 required
                 style={{ width: "100%" }}
@@ -300,7 +312,6 @@ function Registro() {
                 name="webSite"
                 id="webSite"
                 placeholder="Sito Web"
-                required
                 style={{ width: "100%" }}
               />
             </div>
