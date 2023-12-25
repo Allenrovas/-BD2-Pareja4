@@ -5,7 +5,7 @@ import MyCardBook from "../../components/MyCardBook/MyCardBook";
 import RentCardBook from "../../components/RentCardBook/RentCardBook";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useUser } from "../../userCtx/User";
-const MyBooks = () => {
+const Friends = () => {
     const { logged } = useUser();
     const navigate = useNavigate();
     const [librosComprados, setLibrosComprados] = useState([{
@@ -120,7 +120,7 @@ const MyBooks = () => {
                         d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                         />
                   </svg>
-                  Mis Libros
+                  Mis Amigos
                 </h1>
                 </div>
                 <div className="pt-4">
@@ -162,4 +162,4 @@ const MyBooks = () => {
     );
 }
 
-export default MyBooks;
+export default Friends;

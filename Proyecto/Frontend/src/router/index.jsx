@@ -11,6 +11,8 @@ import MyBooks from "../pages/MyBooks/MyBooks";
 import Profile from "../pages/Profile/Profile";
 import Registro from "../pages/Registro/Registro";
 import { useUser } from "../userCtx/User";
+import Friends from "../pages/Friends/Friends";
+import AddFriends from "../pages/AddFriends/AddFriends";
 
 const PrivateRoute = () => {
     const { logged } = useUser();
@@ -65,7 +67,15 @@ export const router = createBrowserRouter([
             {
                 path: 'book/:id',
                 element: <Book />
-            }
+            },
+            {
+                path: 'friends',
+                element: <Friends />
+            },
+            {
+                path: 'addfriends',
+                element: <AddFriends />
+            }	
         ]
     }
 ]);

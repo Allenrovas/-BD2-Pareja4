@@ -42,12 +42,12 @@ const Sidebar = () => {
     {
       name: "Mis Amigos",
       icon: <FaUserFriends className="text-3xl" />,
-      path: "/user/mybooks",
+      path: "/user/friends",
     },
     {
       name: "Añadir Amigos",
       icon: <IoPersonAddSharp className="text-3xl" />,
-      path: "/user/history",
+      path: "/user/AddFriends",
     },
     {
         name: "Mensajes",
