@@ -50,6 +50,11 @@ export const login = async (data) => {
     return response;
 }
 
+export const getUserData = async (id) => {
+    const response = await instance.get(`/user/get/${id}`);
+    return response;
+}
+
 // Obtener los libros
 export const getBooks = async () => {
     const response = await instance.get('/book/getBooks');

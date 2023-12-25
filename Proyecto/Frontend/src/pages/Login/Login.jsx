@@ -32,8 +32,8 @@ function Login() {
       console.log("xd");
       if (res.status === 200) {
         const savedData = {
-          id: res.data.data._id,
-          rol: res.data.data.role,
+          id: res.data.data,
+          rol: 0,
         };
         console.log("ESTO ES LO QUE SE GUARDA:");
         console.log(savedData);
