@@ -55,6 +55,25 @@ export const getUserData = async (id) => {
     return response;
 }
 
+export const getFriends = async (id) => {
+    const response = await instance.get(`/user/get/friends/${id}`);
+    return response;
+}
+
+export const deleteFriend = async (data) => {
+    console.log(data);
+    const response = await instance.delete('/user/delete/friend', { data: data }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+
+
+// ----------------------- LIBROS -----------------------
+
 // Obtener los libros
 export const getBooks = async () => {
     const response = await instance.get('/book/getBooks');

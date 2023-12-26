@@ -69,7 +69,36 @@ export const signInPassword = async (req, res) => {
             return res.response(null, 'Invalid password', 400);
         }
 
-        res.response(user.email , 'User logged', 200);
+        const names = {
+            name1: "",
+            name2: "",
+            lastname1: "",
+            lastname2: ""
+        }
+
+        const aux = user.name.split(" ");
+        if (aux.length === 1) {
+            names.name1 = aux[0];
+        } else if (aux.length === 2) {
+            names.name1 = aux[0];
+            names.lastname1 = aux[1];
+        } else if (aux.length === 3) {
+            names.name1 = aux[0];
+            names.name2 = aux[1];
+            names.lastname1 = aux[2];
+        } else if (aux.length === 4) {
+            names.name1 = aux[0];
+            names.name2 = aux[1];
+            names.lastname1 = aux[2];
+            names.lastname2 = aux[3];
+        }
+
+        const resp = {
+            email: user.email,
+            name: names.name1+" "+names.lastname1,
+        }
+
+        res.response(resp , 'User logged', 200);
 
         
     } catch (error) {

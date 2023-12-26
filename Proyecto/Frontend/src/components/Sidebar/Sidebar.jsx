@@ -22,9 +22,8 @@ const Sidebar = () => {
     if (logged) {
       const user = JSON.parse(localStorage.getItem("data_user"));
       console.log(localStorage.getItem("data_user"));
-      Service.getUserData(user.id).then((res) => {
-        setUserName(res.data.data.name1 + " " + res.data.data.lastname1);
-      });
+      setUserName(user.name);
+    
       setIsAdmin(user.rol == 1);
     }
   }, [logged]);

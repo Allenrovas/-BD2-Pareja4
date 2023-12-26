@@ -1,4 +1,5 @@
 import neo4jConnection from "../db/neoConnection.js";
+import PhotoUser from "../db/models/photo.model.js";
 
 export const getUser = async (req, res) => {
     try {
@@ -95,7 +96,7 @@ export const addFriend = async (req, res) => {
         }
 
         await neo4jConnection.run(
-            `MATCH (user:User {email: $email}), (friend:User {email: $friendEmail}) CREATE (user)-[:IS_FRIEND_OF]->(friend)`,
+            `MATCH (user:User {email: $email}), (friend:User {email: $friendEmail}) CREATE (user)-[:IS_FRIEND_OF]->(friend), (friend)-[:IS_FRIEND_OF]->(user)`,
             { email, friendEmail }
         );
 
@@ -105,4 +106,103 @@ export const addFriend = async (req, res) => {
         console.log(error);
         res.response(null, error.message, 500);
     }
+};
+
+export const getFriends = async (req, res) => {
+    
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        const friends = await neo4jConnection.run(
+            `MATCH (user:User {email: $email})-[r:IS_FRIEND_OF]->(friend:User) RETURN friend`,
+            { email }
+        );
+
+        const friendsList = friends.records.map(friend => {
+            const aux = friend.get('friend').properties;
+            delete aux.password;
+            return aux;
+        });
+
+        // agregarle su foto de perfil a cada amigo
+        for (let i = 0; i < friendsList.length; i++) {
+            const friend = friendsList[i];
+            const photo = await PhotoUser.findOne({ user: friend.email });
+            if (photo) {
+                friend.extPhoto = photo.name.split('.')[1];
+                friend.photo = photo.content.toString('base64');
+            }
+        }
+
+        res.response(friendsList, 'Friends found', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+};
+
+export const deleteFriend = async (req, res) => {
+
+    try {
+        const { email, friendEmail } = req.body;
+
+        console.log(email, friendEmail);
+
+        if (!email || !friendEmail) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        const isFriend = await neo4jConnection.run(
+            `MATCH (user:User {email: $friendEmail}) RETURN user`,
+            { friendEmail }
+        );
+
+        if (isFriend.records.length === 0) {
+            return res.response(null, 'Friend not found', 404);
+        }
+
+        const isFriendOf = await neo4jConnection.run(
+            `MATCH (user:User {email: $email})-[r:IS_FRIEND_OF]->(friend:User {email: $friendEmail}) RETURN r`,
+            { email, friendEmail }
+        );
+
+        if (isFriendOf.records.length === 0) {
+            return res.response(null, 'Friend not added', 400);
+        }
+
+        await neo4jConnection.run(
+            `MATCH (user:User {email: $email})-[r:IS_FRIEND_OF]->(friend:User {email: $friendEmail}), (friend)-[r2:IS_FRIEND_OF]->(user) DELETE r, r2`,
+            { email, friendEmail }
+        );
+
+        res.response(null, 'Friend deleted', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+
 };
