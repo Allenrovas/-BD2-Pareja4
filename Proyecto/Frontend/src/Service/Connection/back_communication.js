@@ -70,6 +70,15 @@ export const deleteFriend = async (data) => {
     return response;
 }
 
+export const getFriendsInCommon = async (email) => {
+    const response = await instance.get(`/user/get/friends/common/${email}`);
+    return response;
+}
+
+export const getFriendsSuggestionsBySpecialty = async (email) => {
+    const response = await instance.get(`/user/get/suggest/friends/specialty/${email}`);
+    return response;
+}
 
 
 // ----------------------- LIBROS -----------------------

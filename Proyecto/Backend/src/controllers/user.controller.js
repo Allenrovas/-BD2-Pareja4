@@ -1,4 +1,5 @@
 import neo4jConnection from "../db/neoConnection.js";
+import neo4jConnection2 from "../db/neoConnection2.js";
 import PhotoUser from "../db/models/photo.model.js";
 
 export const getUser = async (req, res) => {
@@ -205,4 +206,109 @@ export const deleteFriend = async (req, res) => {
         res.response(null, error.message, 500);
     }
 
+};
+
+
+export const getFriendsInCommon = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        const friends = await neo4jConnection.run(
+            `MATCH (user:User {email: $email})-[:IS_FRIEND_OF]->(friend:User)-[:IS_FRIEND_OF]->(friendOfFriend:User) WHERE NOT (user)-[:IS_FRIEND_OF]->(friendOfFriend) AND user <> friendOfFriend RETURN friendOfFriend`,
+            { email }
+        );
+
+        const friendsList = friends.records.map(friend => {
+            const aux = friend.get('friendOfFriend').properties;
+            delete aux.password;
+            return aux;
+        });
+
+        // agregarle su foto de perfil a cada amigo
+        for (let i = 0; i < friendsList.length; i++) {
+            const friend = friendsList[i];
+            const photo = await PhotoUser.findOne({ user: friend.email });
+            if (photo) {
+                friend.extPhoto = photo.name.split('.')[1];
+                friend.photo = photo.content.toString('base64');
+            }
+        }
+
+        res.response(friendsList, 'Friends found', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+};
+
+export const getFriendsBySpecialty = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection2.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        // const friends = await neo4jConnection.run(
+        //     `MATCH (user:User {email: $email})-[:IS_FRIEND_OF]->(friend:User)-[:IS_FRIEND_OF]->(friendOfFriend:User) WHERE NOT (user)-[:IS_FRIEND_OF]->(friendOfFriend) AND user <> friendOfFriend AND friendOfFriend.specialty = user.specialty RETURN friendOfFriend`,
+        //     { email }
+        // );
+
+//         MATCH (user:User {email: 'a@gmail.com'})
+        // MATCH (otherUser:User)
+        // WHERE otherUser <> user AND otherUser.specialty = user.specialty
+        // AND NOT (user)-[:IS_FRIEND_OF]->(otherUser)
+        // RETURN DISTINCT otherUser;
+
+        const friends = await neo4jConnection2.run(
+            `MATCH (user:User {email: $email}) MATCH (otherUser:User) WHERE otherUser <> user AND otherUser.specialty = user.specialty AND NOT (user)-[:IS_FRIEND_OF]->(otherUser) RETURN DISTINCT otherUser`,
+            { email }
+        );
+
+
+        const friendsList = friends.records.map(friend => {
+            const aux = friend.get('otherUser').properties;
+            delete aux.password;
+            return aux;
+        });
+
+        // agregarle su foto de perfil a cada amigo
+        for (let i = 0; i < friendsList.length; i++) {
+            const friend = friendsList[i];
+            const photo = await PhotoUser.findOne({ user: friend.email });
+            if (photo) {
+                friend.extPhoto = photo.name.split('.')[1];
+                friend.photo = photo.content.toString('base64');
+            }
+        }
+
+        res.response(friendsList, 'Friends found', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
 };
