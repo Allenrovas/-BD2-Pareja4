@@ -101,6 +101,12 @@ export const addFriend = async (req, res) => {
             { email, friendEmail }
         );
 
+        // crear nodo de mensajes y agregarle a los dos usuarios
+        await neo4jConnection.run(
+            `MATCH (user:User {email: $email}), (friend:User {email: $friendEmail}) CREATE (user)-[:HAS_MESSAGES]->(chat:Chat { User1: $email, User2: $friendEmail, Type: "Chat", Messages: ""}), (friend)-[:HAS_MESSAGES]->(chat)`,
+            { email, friendEmail }
+        );
+
         res.response(null, 'Friend added', 200);
 
     } catch (error) {

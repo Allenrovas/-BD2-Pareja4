@@ -29,7 +29,17 @@ export const signUp = async (req, res) => {
             { name, username, email, age, specialty, webSite, passwordCifrado }
         );
 
-        console.log(req.file);
+        // crear nodo de publicaciones y relacionar con el usuario
+        // await neo4jConnection.run(
+        //     `CREATE (user:User {email: $email})-[:HAS]->(posts:Posts)`,
+        //     { email }
+        // );
+
+        await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) CREATE (posts:Posts { Type: "Posts", Posts: "" }) CREATE (user)-[:HAS]->(posts)`,
+            { email }
+        );
+
 
         const { buffer, originalname } = req.file;
         // const fileExtension = originalname.split('.').pop();
