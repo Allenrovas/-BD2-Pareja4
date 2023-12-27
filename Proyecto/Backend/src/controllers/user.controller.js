@@ -1,6 +1,7 @@
 import neo4jConnection from "../db/neoConnection.js";
 import neo4jConnection2 from "../db/neoConnection2.js";
 import PhotoUser from "../db/models/photo.model.js";
+import Pdf from "../db/models/pdf.model.js";
 
 export const getUser = async (req, res) => {
     try {
@@ -318,3 +319,86 @@ export const getFriendsBySpecialty = async (req, res) => {
         res.response(null, error.message, 500);
     }
 };
+
+export const updateProfile = async (req, res) => {
+
+    try {
+        const { username, webSite } = req.body;
+        const { email } = req.params;
+
+        if (!username || !webSite || !email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) SET user.username = $username, user.webSite = $webSite`,
+            { email, username, webSite }
+        );
+
+        res.response(null, 'Profile updated', 200);
+        }
+    catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+};
+
+export const uploadPdf = async (req, res) => {
+
+    try{
+        
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+        
+        const isUser = await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        console.log(req.file);
+        
+        const { buffer, originalname } = req.file;
+        // const fileExtension = originalname.split('.').pop();
+
+        await Pdf.create({ name: originalname, content: buffer, user: email });
+
+        res.response(null, 'Pdf uploaded', 200);
+    }catch(error){
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+};
+
+export const getFiles = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const files = await Pdf.find({ user: email });
+
+        res.response(files, 'Files found', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+}
