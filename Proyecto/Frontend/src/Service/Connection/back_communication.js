@@ -135,7 +135,7 @@ export const getUsers = async () => {
 
 // Obtener un usuario
 export const getUser = async (id) => {
-    const response = await instance.get(`/user/${id}`);
+    const response = await instance.get(`/user/get/${id}`);
     return response;
 }
 
@@ -226,5 +226,29 @@ export const addHistory = async (data) => {
 // Obtener el historial de un usuario
 export const getHistory = async (id) => {
     const response = await instance.get(`/history/${id}`);
+    return response;
+}
+
+// Subir un pdf de un caso
+
+export const uploadPdf = async (data, id) => {
+    const formData = new FormData();
+
+    console.log(data)
+
+    formData.append('pdf', data);
+
+    const response = await instance.post(`/user/upload/pdf/${id}`, formData, {}).catch((error) => {
+        console.log(error);
+        // console.log(error.response.data.message);
+        throw error;
+    });
+    return response;
+}
+
+// Obtener los pdfs de un usuario
+
+export const getFiles = async (id) => {
+    const response = await instance.get(`/user/get/files/${id}`);
     return response;
 }

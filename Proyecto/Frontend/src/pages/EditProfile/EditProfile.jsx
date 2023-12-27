@@ -7,13 +7,18 @@ import toast, { Toaster } from "react-hot-toast";
 const EditProfile = () => {
   const navigate = useNavigate();
   const usuario = JSON.parse(localStorage.getItem("data_user"));
+  const [nombreString, setNombreString] = useState("");
   const [userDetails, setUserDetails] = useState({
-    name: "",
-    lastName: "",
-    phone: "",
+    name1: "",
+    name2: "",
+    lastname1: "",
+    lastname2: "",
+    username: "",
+    age: "",
     email: "",
-    birthDate: "",
-    password: "",
+    name: "",
+    specialty: "",
+    webSite: "",
   });
 
   useEffect(() => {
@@ -30,30 +35,11 @@ const EditProfile = () => {
     });
   };
 
-  function parseDate(inputDate) {
-    const date = new Date(inputDate);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear().toString();
 
-    return `${day}/${month}/${year}`;
-  }
-
-  function parseDate2(inputDate) {
-    const parts = inputDate.split('/');
-    const jsDate = new Date(parts[2], parts[1] - 1, parts[0]);
-
-    const day = jsDate.getDate().toString().padStart(2, "0");
-    const month = (jsDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = jsDate.getFullYear().toString();
-
-    return `${year}-${month}-${day}`;
-  }
 
   const handleEditar = async (event) => {
     event.preventDefault();
     try {
-      userDetails.birthDate = parseDate(userDetails.birthDate);
       const res = await Service.updateUser(usuario.id, userDetails);
       if (res.status === 200) {
         toast.success("Se ha actualizado su perfil de usuario correctamente.", {
@@ -81,7 +67,7 @@ const EditProfile = () => {
       const res = await Service.getUser(data.id);
       if (res.status === 200) {
         setUserDetails(res.data.data);
-        res.data.data.birthDate = parseDate2(res.data.data.birthDate);
+        setNombreString(res.data.data.name1 + " " + res.data.data.name2+" "+res.data.data.lastname1+" "+res.data.data.lastname2);
       }
     } catch (error) {
       console.log(error);
@@ -107,71 +93,40 @@ const EditProfile = () => {
             <form
               onSubmit={(e) => { handleEditar(e); }}
             >
-              <div class="mb-5 pt-3">
+              <div class="mb-5">
                 <label class="mb-5 block text-base font-semibold text-white sm:text-xl">
                   Nombre Completo
                 </label>
-                <div class="-mx-3 flex flex-wrap">
-                  <div class="w-full px-3 sm:w-1/2">
-                    <div class="mb-5">
-                      <label
-                        for="name"
-                        class="mb-3 block text-base font-medium text-white"
-                      >
-                        Nombre
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Ingresa tu Nombre"
-                        defaultValue={userDetails.name}
-                        onChange={handleInputChange}
-                        required={true}
-                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                      />
-                    </div>
-                  </div>
-                  <div class="w-full px-3 sm:w-1/2">
-                    <div class="mb-5">
-                      <label
-                        for="name"
-                        class="mb-3 block text-base font-medium text-white"
-                      >
-                        Apellido
-                      </label>
-                      <input
-                        type="text"
-                        name="lastname"
-                        id="lastname"
-                        placeholder="Ingresa tu Apellido"
-                        defaultValue={userDetails.lastName}
-                        onChange={handleInputChange}
-                        required={true}
-                        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Ingresa tu Nombre"
+                  defaultValue={nombreString}
+                  onChange={handleInputChange}
+                  required={true}
+                  disabled={true}
+                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
               </div>
               <div class="mb-5">
                 <label
-                  for="phone"
                   class="mb-3 block text-base font-medium text-white"
                 >
-                  Número de Teléfono
+                  Sitio Web
                 </label>
                 <input
                   type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder="Ingresa tu número de teléfono"
-                  defaultValue={userDetails.phone}
+                  name="webSite"
+                  id="webSite"
+                  placeholder="Ingresa tu Sitio Web"
+                  defaultValue={userDetails.webSite}
                   onChange={handleInputChange}
                   required={true}
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
               </div>
+
               <div class="mb-5">
                 <label
                   for="email"
@@ -190,36 +145,56 @@ const EditProfile = () => {
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
               </div>
+
               <div class="mb-5">
                 <label
-                  for="name"
                   class="mb-3 block text-base font-medium text-white"
                 >
-                  Contraseña
+                  Especialidad
                 </label>
                 <input
                   type="text"
-                  name="password"
-                  id="password"
-                  placeholder="Ingresa tu contraseña"
-                  defaultValue={userDetails.password}
+                  name="specialty"
+                  id="specialty"
+                  placeholder="Ingresa tu Especialidad"
+                  defaultValue={userDetails.specialty}
                   onChange={handleInputChange}
+                  disabled={true}
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
               </div>
 
               <div class="mb-5">
                 <label
-                  for="date"
                   class="mb-3 block text-base font-medium text-white"
                 >
-                  Fecha de Nacimiento
+                  Edad
                 </label>
                 <input
-                  type="date"
-                  name="birthDate"
-                  id="birthDate"
-                  defaultValue={userDetails.birthDate}
+                  type="number"
+                  name="age"
+                  id="age"
+                  placeholder="Ingresa tu Edad"
+                  defaultValue={userDetails.age}
+                  onChange={handleInputChange}
+                  disabled={true}
+                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
+              </div>
+
+              <div class="mb-5">
+                <label
+                  class="mb-3 block text-base font-medium text-white"
+                >
+                  Nombre de Usuario
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="Ingresa tu Nombre de Usuario"
+                  defaultValue={userDetails.username}
+                  onChange={handleInputChange}
                   required={true}
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
