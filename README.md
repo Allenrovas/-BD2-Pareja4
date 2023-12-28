@@ -9,4 +9,4 @@
 
 - [`Práctica 1`](./Practica1)
 - [`Práctica 2`](./Practica2)
-- `Proyecto 1`
+- [`Proyecto`](./Proyecto)
