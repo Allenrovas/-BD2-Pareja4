@@ -85,6 +85,16 @@ export const searchUsers = async (email) => {
     return response;
 }
 
+export const agregarAmigo = async (data) => {
+    const response = await instance.post('/user/add/friend', data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+
 
 // ----------------------- LIBROS -----------------------
 

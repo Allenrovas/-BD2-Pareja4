@@ -197,7 +197,7 @@ const obtenerPdf = (buffer) => {
         
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-white text-3xl mb-6">
-            Mis Casos que estoy trabajando en formato
+            Mis Casos que estoy trabajando
           </h1>
 
           <ul className="w-full">

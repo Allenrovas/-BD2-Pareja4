@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaUserLarge } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Service from "../../Service/Service";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import pdfSvg from "../../assets/pdfsvg.svg";
@@ -10,6 +10,7 @@ const ProfileFriend = () => {
   const usuario = JSON.parse(localStorage.getItem("data_user"));
   const [listaCasos, setListaCasos] = useState([]);
   const [nombreString, setNombreString] = useState("");
+  const { id:idUser } = useParams();
   const [userDetails, setUserDetails] = useState({
     name1: "",
     name2: "",
@@ -33,8 +34,7 @@ const ProfileFriend = () => {
   console.log(userDetails.password)
   const obtenerUsuario = async () => {
     try {
-      const data = JSON.parse(localStorage.getItem("data_user"));
-      const res = await Service.getUser(data.id);
+      const res = await Service.getUser(idUser);
       if (res.status === 200) {
         setUserDetails(res.data.data);
         setNombreString(res.data.data.name1 + " " + res.data.data.name2+" "+res.data.data.lastname1+" "+res.data.data.lastname2);
@@ -46,9 +46,7 @@ const ProfileFriend = () => {
 
 const obtenerCasos = async () => {
   try {
-    //Obtener nombre de los pdf
-    const data = JSON.parse(localStorage.getItem("data_user"));
-    const res = await Service.getFiles(data.id);
+    const res = await Service.getFiles(idUser);
     console.log(res.data.data);
     if (res.status === 200) {
       setListaCasos(res.data.data);
@@ -170,7 +168,7 @@ const obtenerPdf = (buffer) => {
         
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-white text-3xl mb-6">
-            Mis Casos que estoy trabajando en formato
+            Mis Casos que estoy trabajando
           </h1>
 
           <ul className="w-full">

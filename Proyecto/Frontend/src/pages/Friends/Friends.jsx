@@ -22,6 +22,7 @@ const Friends = () => {
         console.log(err);
       });
   }, []);
+
   return (
     <div className="flex bg-zinc-900">
       <Sidebar />

@@ -14,7 +14,7 @@ function Login() {
   useEffect(() => {
     console.log(logged);
     if (logged) {
-      navigate("/user/home");
+      navigate("/user/myprofile");
     } else {
       navigate("/");
     }
@@ -52,7 +52,7 @@ function Login() {
           progress: undefined,
         });
         setTimeout(() => {
-          navigate("/user/home");
+          navigate("/user/myprofile");
         }, 3000);
       } else {
         toast.error(

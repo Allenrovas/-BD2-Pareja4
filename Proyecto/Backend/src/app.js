@@ -6,6 +6,7 @@ import responseMiddleware from "./middlewares/response.js";
 import testHandler from "./routes/test.routes.js";
 import authHandler from "./routes/auth.routes.js";
 import userHandler from "./routes/user.routes.js";
+import queryHandler from "./routes/querys.routes.js";
 import error404Handler from "./routes/404.routes.js";
 
 const app = express();
@@ -21,6 +22,7 @@ connect();
 app.use(testHandler);
 app.use("/auth", authHandler);
 app.use("/user", userHandler);
+app.use("/query", queryHandler);
 app.use(error404Handler);
 
 export default app;

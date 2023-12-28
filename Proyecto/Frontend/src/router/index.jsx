@@ -13,6 +13,7 @@ import Registro from "../pages/Registro/Registro";
 import { useUser } from "../userCtx/User";
 import Friends from "../pages/Friends/Friends";
 import AddFriends from "../pages/AddFriends/AddFriends";
+import ProfileFriend from "../pages/ProfileFriend/ProfileFriend";
 
 const PrivateRoute = () => {
     const { logged } = useUser();
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
             {
                 path: 'addfriends',
                 element: <AddFriends />
+            },
+            {
+                path: 'profile/:id',
+                element: <ProfileFriend />
             }	
         ]
     }
