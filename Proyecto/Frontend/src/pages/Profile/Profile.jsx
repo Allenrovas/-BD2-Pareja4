@@ -79,9 +79,23 @@ const obtenerCasos = async () => {
 }
 
 const obtenerPdf = (buffer) => {
-  const blob = new Blob([buffer], { type: "application/pdf" });
-  return URL.createObjectURL(blob);
+  try {
+    // Crear un Uint8Array desde el buffer
+    const uint8Array = new Uint8Array(buffer);
+
+    // Crear un Blob a partir del Uint8Array
+    const blob = new Blob([uint8Array], { type: "application/pdf" });
+
+    // Crear una URL para el Blob
+    const pdfUrl = URL.createObjectURL(blob);
+
+    return pdfUrl;
+  } catch (error) {
+    console.error("Error al crear el PDF:", error);
+    return null;
+  }
 };
+
 
 
 
