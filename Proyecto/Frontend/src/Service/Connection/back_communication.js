@@ -267,3 +267,21 @@ export const getFiles = async (id) => {
     const response = await instance.get(`/user/get/files/${id}`);
     return response;
 }
+
+// Obtener las publicaciones de un usuario
+
+export const getPublications = async (id) => {
+    const response = await instance.get(`/publication/getPublications/${id}`);
+    return response;
+}
+
+// Crear una publicación
+
+export const createPublication = async (email,publication) => {
+    const response = await instance.post(`/publication/create`, {email,publication}, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}

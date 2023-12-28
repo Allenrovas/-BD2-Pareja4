@@ -11,6 +11,7 @@ const ProfileFriend = () => {
   const [listaCasos, setListaCasos] = useState([]);
   const [nombreString, setNombreString] = useState("");
   const { id:idUser } = useParams();
+
   const [userDetails, setUserDetails] = useState({
     name1: "",
     name2: "",
@@ -84,7 +85,7 @@ const obtenerPdf = (buffer) => {
         <div>
           <h1 className="text-white text-3xl">
             <FaUserLarge className="text-3xl inline-block mr-2" />
-            Mi Perfil
+            Perfil de {nombreString}
           </h1>
         </div>
         <div class="flex items-center justify-center p-12">

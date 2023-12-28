@@ -36,7 +36,7 @@ export const signUp = async (req, res) => {
         // );
 
         await neo4jConnection.run(
-            `MATCH (user:User {email: $email}) CREATE (posts:Posts { Type: "Posts", Posts: "" }) CREATE (user)-[:HAS]->(posts)`,
+            `MATCH (user:User {email: $email}) CREATE (posts:Posts { Type: "Posts", Posts: [] }) CREATE (user)-[:HAS]->(posts)`,
             { email }
         );
 

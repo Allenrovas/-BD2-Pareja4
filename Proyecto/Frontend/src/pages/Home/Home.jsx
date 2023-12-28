@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Service from "../../Service/Service";
-import BookCard from "../../components/BookCard/BookCard";
+import PublicationCard from "../../components/PublicationCard/PublicationCard";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useUser } from "../../userCtx/User";
 const Home = () => {
@@ -9,7 +9,8 @@ const Home = () => {
   const [titulo, setTitulo] = useState('')
   const [isAdmin, setIsAdmin] = useState(false);
   const { logged, setLogged } = useUser();
-  const [books, setBooks] = useState([]);
+  const [publications, setPublications] = useState([]);
+  const [newPublication, setNewPublication] = useState({content: ""});
   useEffect(() => {
     if (!logged) {
       navigate("/")
@@ -18,24 +19,42 @@ const Home = () => {
     console.log(localStorage.getItem('data_user'));
     setIsAdmin(user.rol == 1);
     Service.getUser(user.id).then((res) => {
-      console.log(res);
+      console.log(res.data);
       const hora = new Date().getHours();
 
       if (hora >= 5 && hora < 12) {
-        setTitulo(`Buenos días ${res.data.data.name + " " + res.data.data.lastName}!`);
+        setTitulo(`¡Buenos días ${res.data.data.name}!`);
       } else if (hora >= 12 && hora < 18) {
-        setTitulo(`Buenas tardes ${res.data.data.name + " " + res.data.data.lastName}!`);
+        setTitulo(`¡Buenas tardes ${res.data.data.name}!`);
       } else {
-        setTitulo(`Buenas noches ${res.data.data.name + " " + res.data.data.lastName}!`);
+        setTitulo(`¡Buenas noches ${res.data.data.name}!`);
       }
     });
 
-    Service.getBooks().then((res) => {
+    Service.getPublications(user.id).then((res) => {
       console.log(res);
-      setBooks(res.data.data.filter(libro => libro.bookState !== 2));
+      setPublications(res.data.data.filter(libro => libro.bookState !== 2));
     });
   }, [])
-    console.log(books)
+
+  const handleCreatePublication = async (e) => {
+    e.preventDefault();
+
+    const user = JSON.parse(localStorage.getItem("data_user"));
+
+    try{
+      await Service.createPublication(user.id, newPublication.content);
+
+      const updatedPublications = await Service.getPublications(user.id);
+      setPublications(updatedPublications.data.data.filter(libro => libro.bookState !== 2));
+      setNewPublication({content: ""});
+    }catch(error){
+      console.error(error);
+    }
+
+  }
+
+    console.log(publications)
     return(
         <div className="flex bg-zinc-900">
             <Sidebar />
@@ -56,11 +75,26 @@ const Home = () => {
                         d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                         />
                   </svg>
-                  Catálogo de Libros
+                  Publicaciones de los doctores
                 </h1>
+
+                <form onSubmit={handleCreatePublication}>
+                  <textarea
+                    value = {newPublication.content}
+                    onChange={(e) => setNewPublication({ ...newPublication, content: e.target.value })}
+                    placeholder="Escribe tu nueva publicación..."
+                    className="w-full h-24 p-3 bg-zinc-700 text-white rounded-md mt-3"
+                  />
+                  <button className="`hover:shadow-form w-full rounded-md bg-rojo2 py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                    Publicar
+                  </button>
+
+                </form>
+
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {books.map((book, index) => (
-                  <BookCard key={index} book={book} rol={isAdmin} />
+                {publications.map((publication, index) => (
+                  <PublicationCard key={index} publication={publication} rol={isAdmin} usuario={publication.user} />
                 ))}
                 </div>
             </div>
