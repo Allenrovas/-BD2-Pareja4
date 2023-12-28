@@ -1,5 +1,6 @@
 import neo4jConnection from "../db/neoConnection.js";
 import neo4jConnection2 from "../db/neoConnection2.js";
+import neo4jConnection3 from "../db/neoConnection3.js";
 import PhotoUser from "../db/models/photo.model.js";
 import Pdf from "../db/models/pdf.model.js";
 
@@ -402,3 +403,50 @@ export const getFiles = async (req, res) => {
         res.response(null, error.message, 500);
     }
 }
+
+export const getNoFriends = async (req, res) => {
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection3.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        const usersNoFriends = await neo4jConnection3.run(
+            `MATCH (user:User {email: $email}) MATCH (otherUser:User) WHERE otherUser <> user AND NOT (user)-[:IS_FRIEND_OF]->(otherUser) RETURN otherUser`,
+            { email }
+        );
+
+        const usersNoFriendsList = usersNoFriends.records.map(user => {
+            const aux = user.get('otherUser').properties;
+            delete aux.password;
+            return aux;
+        });
+
+        // agregarle su foto de perfil a cada amigo
+
+        for (let i = 0; i < usersNoFriendsList.length; i++) {
+            const user = usersNoFriendsList[i];
+            const photo = await PhotoUser.findOne({ user: user.email });
+            if (photo) {
+                user.extPhoto = photo.name.split('.')[1];
+                user.photo = photo.content.toString('base64');
+            }
+        }
+
+        res.response(usersNoFriendsList, 'Users found', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+};

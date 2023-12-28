@@ -80,6 +80,11 @@ export const getFriendsSuggestionsBySpecialty = async (email) => {
     return response;
 }
 
+export const searchUsers = async (email) => {
+    const response = await instance.get(`/user/get/noFriends/${email}`);
+    return response;
+}
+
 
 // ----------------------- LIBROS -----------------------
 

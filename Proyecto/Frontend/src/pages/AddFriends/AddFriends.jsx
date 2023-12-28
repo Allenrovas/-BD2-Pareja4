@@ -4,19 +4,45 @@ import Service from "../../Service/Service";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useUser } from "../../userCtx/User";
 import AddFriendCard from "../../components/AddFriendCard/AddFriendCard";
+
 const AddFriends = () => {
   const { logged } = useUser();
   const navigate = useNavigate();
   const [friendsInCommonSpecialty, setFriendsInCommonSpecialty] = useState([]);
   const [friendsInCommon, setFriendsInCommon] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const handleInputChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  // filtrar por nombre, apellido o especialidad
+  const filtrarBusqueda = () => {
+    const resultadosBusqueda = users.filter((user) => {
+      if (user.name.toLowerCase().includes(search.toLowerCase())) {
+        return user;
+      }
+      if (user.specialty.toLowerCase().includes(search.toLowerCase())) {
+        return user;
+      }
+    });
+    setFilteredUsers(resultadosBusqueda);
+
+    console.log(resultadosBusqueda)
+  };
+
   useEffect(() => {
     if (!logged) {
       navigate("/");
     }
+
     const user = JSON.parse(localStorage.getItem("data_user"));
+
     Service.getFriendsInCommon(user.id)
       .then((res) => {
-        console.log(res.data.data)
+        console.log(res.data.data);
         setFriendsInCommon(res.data.data);
       })
       .catch((err) => {
@@ -25,13 +51,20 @@ const AddFriends = () => {
 
     Service.getFriendsSuggestionsBySpecialty(user.id)
       .then((res) => {
-        console.log(res.data.data)
+        console.log(res.data.data);
         setFriendsInCommonSpecialty(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+      Service.searchUsers(user.id)
+      .then((res) => {
+        console.log(res.data.data);
+        setUsers(res.data.data);
+      })
   }, []);
+
   return (
     <div className="flex bg-zinc-900">
       <Sidebar />
@@ -55,13 +88,44 @@ const AddFriends = () => {
             Añadir Amigos
           </h1>
         </div>
-        <div className="pt-4">
+        <div className="pt-6">
           <h2 className="text-white text-3xl">Buscar</h2>
+
+          <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center bg-white rounded-full shadow-xl w-2/4">
+              <input
+                className="rounded-l-full w-full py-4 px-6 text-gray-700 leading-tight focus:outline-none"
+                id="search"
+                type="text"
+                placeholder="Buscar por nombre, apellido o especialidad"
+                onChange={handleInputChange}
+              />
+              <div className="p-4">
+                <button className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center" onClick={filtrarBusqueda}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 transform rotate-90"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      strokeWidth="1.5"
+                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div
             id="cartas"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            {friendsInCommon.length === 0 ? (
+            {filteredUsers.length === 0 ? (
               <div className="flex items-center x-screen justify-center">
                 <div className="max-w-md w-full p-6 rounded-md shadow-md">
                   <p className="text-xl text-center text-white">
@@ -75,13 +139,13 @@ const AddFriends = () => {
                 </div>
               </div>
             ) : (
-              friendsInCommon.map((book, index) => (
+              filteredUsers.map((book, index) => (
                 <AddFriendCard key={index} book={book} />
               ))
             )}
           </div>
         </div>
-        <div className="pt-4">
+        <div className="pt-20">
           <h1 className="text-white text-3xl mb-6">Sugerencias de Amistad</h1>
           <h2 className="text-white text-2xl">Amigos de tus amigos:</h2>
           <div
@@ -108,7 +172,7 @@ const AddFriends = () => {
             )}
           </div>
         </div>
-        <div className="pt-4">
+        <div className="pt-20">
           <h2 className="text-white text-2xl">En el mismo campo que tú:</h2>
           <div
             id="cartas"
@@ -118,7 +182,8 @@ const AddFriends = () => {
               <div className="flex items-center x-screen justify-center">
                 <div className="max-w-md w-full p-6 rounded-md shadow-md">
                   <p className="text-xl text-center text-white">
-                    ¿Has completado tu perfil? No hay coincidencias con tu campo de estudio
+                    ¿Has completado tu perfil? No hay coincidencias con tu campo
+                    de estudio
                   </p>
                   <img
                     className="mx-auto mt-4"
