@@ -83,14 +83,15 @@ export const getPublications = async (req, res) => {
         //Obtener publicaciones de los amigos con su email
 
         const friendsResult = await neo4jConnection.run(
-            `MATCH (user:User {email: $email})-[:IS_FRIEND_OF]-(friend:User)-[:HAS]->(friendPosts:Posts) RETURN friend.email AS friendEmail, friendPosts.Posts AS friendPublications`,
+            `MATCH (user:User {email: $email})-[:IS_FRIEND_OF]-(friend:User)-[:HAS]->(friendPosts:Posts) RETURN DISTINCT friend.email AS friendEmail, friendPosts.Posts AS friendPublications`,
             { email }
         );
+
 
         const friendsData = friendsResult.records.map((record) => {
             const friendEmail = record.get('friendEmail');
             const friendPublications = record.get('friendPublications').map((publication) => {
-              const parsedPublication = JSON.parse(publication);
+              const parsedPublication = Array.isArray(publication) ? publication[0] : JSON.parse(publication);
               // Agregar el email del amigo a la publicación
               parsedPublication.email = friendEmail;
               return parsedPublication;
@@ -100,10 +101,12 @@ export const getPublications = async (req, res) => {
 
         var allPublications = [];
         if (friendsData.length > 0) {
-          allPublications = [...parsedPublications, ...friendsData[0]];
+          allPublications = [...parsedPublications, ...friendsData.flat()];
         }else {
           allPublications = [...parsedPublications];
         }
+
+        console.log(allPublications);
 
 
         const sortedPublications = allPublications.sort((a, b) => {
