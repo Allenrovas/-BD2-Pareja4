@@ -54,9 +54,9 @@ const AddFriendCard = ( { book }) => {
     <div className="relative flex flex-col mt-6 text-white bg-red-900 shadow-md bg-clip-border rounded-xl max-w-full sm:max-w-96 p-4">
       <div className="p-6 text-center">
         {/* ver imagen que viene en formato base64 */}
-        <img className="w-36 h-36 mx-auto mb-4" src={convertBase64ToImage(book.photo)} alt={book.name} />
+        <img className="w-36 h-36 rounded-full mx-auto mb-4" src={convertBase64ToImage(book.photo)} alt={book.name} />
 
-        <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+        <h5 className="block mb-2 font-sans text-xl text-center antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
           {book.name}
         </h5>
         {/* Boton de ver perfil y boton de eliminar amigo */}

@@ -1,4 +1,5 @@
 import neo4jConnection from "../db/neoConnection2.js";
+import PhotoUser from "../db/models/photo.model.js";
 
 export const createPublication = async (req, res) => {
     try {
@@ -80,6 +81,30 @@ export const getPublications = async (req, res) => {
                 publication.email = email;
             });
 
+        // Obtener el nombre del usuario y agregarlo a cada publicación
+
+        const nameResult = await neo4jConnection.run(
+            `MATCH (user:User {email: $email}) RETURN user.name AS userName`,
+            { email }
+        );
+
+        const userName = nameResult.records[0].get('userName');
+
+        parsedPublications.forEach((publication) => {
+            publication.name = userName;
+        });
+
+        // obtener la foto de perfil del usuario y agregarla a cada publicación
+
+        const photoResult = await PhotoUser.findOne({ user: email });
+
+        if (photoResult) {
+            parsedPublications.forEach((publication) => {
+                publication.extPhoto = photoResult.name.split('.')[1];
+                publication.photo = photoResult.content.toString('base64');
+            });
+        }
+
         //Obtener publicaciones de los amigos con su email
 
         const friendsResult = await neo4jConnection.run(
@@ -99,6 +124,76 @@ export const getPublications = async (req, res) => {
             return friendPublications;
           });
 
+          console.log(friendsData);
+
+          // borrar los arrays vacios de friendsData
+          friendsData.forEach((friendData, index) => {
+            if (friendData.length === 0) {
+              friendsData.splice(index, 1);
+            }
+          });
+          
+
+
+        // Obtener el nombre de los amigos y agregarlo a cada publicación
+          if(friendsData.length > 0)
+          {
+            const friendsEmails = friendsData.map((friendData) => friendData[0].email);
+
+          console.log(friendsEmails);
+
+          // obtener los nombres de los usuarion que estan en el arreglo friendsEmails, no el amigo del usuario
+          const friendsNamesResult = await neo4jConnection.run(
+              `MATCH (user:User) WHERE user.email IN $friendsEmails RETURN user.email AS friendEmail, user.name AS friendName`,
+              { friendsEmails }
+          );
+
+          const friendsNames = friendsNamesResult.records.map((record) => {
+              const friendEmail = record.get('friendEmail');
+              const friendName = record.get('friendName');
+              return { friendEmail, friendName };
+          });
+
+          console.log(friendsNames);
+
+          friendsData.forEach((friendData) => {
+            const friendEmail = friendData[0].email;
+            const friendNameObj = friendsNames.find((friend) => friend.friendEmail === friendEmail);
+
+            
+            // Verificar si se encontró el amigo antes de acceder a su nombre
+            const friendName = friendNameObj ? friendNameObj.friendName : null;
+          
+            friendData.forEach((publication) => {
+              // Corregir el nombre de la propiedad al asignar el nombre del amigo
+              publication.name = friendName;
+            });
+          });
+
+          // console.log(friendsData);
+
+          // Obtener la foto de perfil de los amigos y agregarla a cada publicación
+
+          const friendsPhotosResult = await PhotoUser.find({ user: { $in: friendsEmails } });
+
+          const friendsPhotos = friendsPhotosResult.map((photoResult) => {
+              const friendEmail = photoResult.user;
+              const extPhoto = photoResult.name.split('.')[1];
+              const photo = photoResult.content.toString('base64');
+              return { friendEmail, extPhoto, photo };
+          });
+
+
+          friendsData.forEach((friendData) => {
+              const friendEmail = friendData[0].email;
+              const friendPhoto = friendsPhotos.find((friendPhoto) => friendPhoto.friendEmail === friendEmail);
+              friendData.forEach((publication) => {
+                publication.extPhoto = friendPhoto.extPhoto;
+                publication.photo = friendPhoto.photo;
+              });
+          });
+        }
+
         var allPublications = [];
         if (friendsData.length > 0) {
           allPublications = [...parsedPublications, ...friendsData.flat()];
@@ -106,7 +201,7 @@ export const getPublications = async (req, res) => {
           allPublications = [...parsedPublications];
         }
 
-        console.log(allPublications);
+        // console.log(allPublications);
 
 
         const sortedPublications = allPublications.sort((a, b) => {
