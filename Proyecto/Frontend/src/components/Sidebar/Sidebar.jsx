@@ -51,7 +51,7 @@ const Sidebar = () => {
     {
         name: "Mensajes",
         icon: <BiSolidMessageSquareDetail className="text-3xl" />,
-        path: "/user/history",
+        path: "/user/Chat",
     },
     {
         name: "Consultar Pacientes",

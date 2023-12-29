@@ -294,3 +294,20 @@ export const createPublication = async (email,publication) => {
     });
     return response;
 }
+
+// Enviar un mensaje
+export const sendMessage = async (data) => {
+    const response = await instance.post(`/chat/create`, data, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return response;
+}
+
+// Obtener los mensajes
+
+export const getMessages = async (data) => {
+    const response = await instance.get(`/chat/getMessages/${data.email}/${data.friendEmail}`);
+    return response;
+}
