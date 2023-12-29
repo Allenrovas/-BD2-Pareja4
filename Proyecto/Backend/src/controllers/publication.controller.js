@@ -98,8 +98,13 @@ export const getPublications = async (req, res) => {
             return friendPublications;
           });
 
+        var allPublications = [];
+        if (friendsData.length > 0) {
+          allPublications = [...parsedPublications, ...friendsData[0]];
+        }else {
+          allPublications = [...parsedPublications];
+        }
 
-        const allPublications = [...parsedPublications, ...friendsData[0]];
 
         const sortedPublications = allPublications.sort((a, b) => {
             const dateA = parseCustomDate(a.date);
