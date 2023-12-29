@@ -4,7 +4,7 @@ import CRUDLibros from "../pages/Admin/CRUDLibros";
 import ELIMUsers from "../pages/Admin/ElimUsers";
 import Book from "../pages/Book/Book";
 import EditProfile from "../pages/EditProfile/EditProfile";
-import History from "../pages/History/History";
+import Chat from "../pages/Chat/Chat";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import MyBooks from "../pages/MyBooks/MyBooks";
@@ -63,8 +63,8 @@ export const router = createBrowserRouter([
                 element: <MyBooks/>
             },
             {
-                path:'history',
-                element: <History/>
+                path:'chat',
+                element: <Chat/>
             },
             {
                 path: 'book/:id',

@@ -9,6 +9,7 @@ import userHandler from "./routes/user.routes.js";
 import queryHandler from "./routes/querys.routes.js";
 import error404Handler from "./routes/404.routes.js";
 import publicationHandler from "./routes/publication.routes.js";
+import chatHandler from "./routes/chat.routes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ connect();
 
 app.use(testHandler);
 app.use("/auth", authHandler);
+app.use("/chat", chatHandler);
 app.use("/user", userHandler);
 app.use("/publication", publicationHandler);
 app.use("/query", queryHandler);
