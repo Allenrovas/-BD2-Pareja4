@@ -60,6 +60,11 @@ export const getFriends = async (id) => {
     return response;
 }
 
+export const getFriends2 = async (id) => {
+    const response = await instance.get(`/user/get/friends2/${id}`);
+    return response;
+}
+
 export const deleteFriend = async (data) => {
     console.log(data);
     const response = await instance.delete('/user/delete/friend', { data: data }, {
@@ -94,6 +99,10 @@ export const agregarAmigo = async (data) => {
     return response;
 }
 
+export const getQuerys = async () => {
+    const response = await instance.get('/query/querys');   
+    return response;
+} 
 
 
 // ----------------------- LIBROS -----------------------

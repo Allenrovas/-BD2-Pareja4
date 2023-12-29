@@ -450,3 +450,50 @@ export const getNoFriends = async (req, res) => {
         res.response(null, error.message, 500);
     }
 };
+
+export const getFriends2 = async (req, res) => {
+    
+    try {
+        const { email } = req.params;
+
+        if (!email) {
+            return res.response(null, 'Missing fields', 400);
+        }
+
+        const isUser = await neo4jConnection3.run(
+            `MATCH (user:User {email: $email}) RETURN user`,
+            { email }
+        );
+
+        if (isUser.records.length === 0) {
+            return res.response(null, 'User not found', 404);
+        }
+
+        const friends = await neo4jConnection3.run(
+            `MATCH (user:User {email: $email})-[r:IS_FRIEND_OF]->(friend:User) RETURN friend`,
+            { email }
+        );
+
+        const friendsList = friends.records.map(friend => {
+            const aux = friend.get('friend').properties;
+            delete aux.password;
+            return aux;
+        });
+
+        // agregarle su foto de perfil a cada amigo
+        for (let i = 0; i < friendsList.length; i++) {
+            const friend = friendsList[i];
+            const photo = await PhotoUser.findOne({ user: friend.email });
+            if (photo) {
+                friend.extPhoto = photo.name.split('.')[1];
+                friend.photo = photo.content.toString('base64');
+            }
+        }
+
+        res.response(friendsList, 'Friends found', 200);
+
+    } catch (error) {
+        console.log(error);
+        res.response(null, error.message, 500);
+    }
+};

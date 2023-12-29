@@ -56,7 +56,7 @@ const Sidebar = () => {
     {
         name: "Consultar Pacientes",
         icon: <MdOutlineContentPasteSearch className="text-3xl" />,
-        path: "/user/history",
+        path: "/user/querys",
     },
   ];
   const MenuAdmin = [

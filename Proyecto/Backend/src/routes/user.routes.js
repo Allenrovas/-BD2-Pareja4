@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addFriend, deleteFriend, getFriends, getFriendsBySpecialty, getFriendsInCommon, getUser, updateProfile, uploadPdf, getFiles, getNoFriends} from "../controllers/user.controller.js";
+import { addFriend, deleteFriend, getFriends, getFriendsBySpecialty, getFriendsInCommon, getUser, updateProfile, uploadPdf, getFiles, getNoFriends, getFriends2} from "../controllers/user.controller.js";
 import Upload from "../middlewares/file.js";
 
 const router = Router();
@@ -10,6 +10,7 @@ router.patch("/update/:email", updateProfile);
 router.get("/get/:email", getUser);
 router.post("/add/friend", addFriend);
 router.get("/get/friends/:email", getFriends);
+router.get("/get/friends2/:email", getFriends2);
 router.delete("/delete/friend", deleteFriend);
 router.get("/get/friends/common/:email", getFriendsInCommon);
 router.get("/get/suggest/friends/specialty/:email", getFriendsBySpecialty);
