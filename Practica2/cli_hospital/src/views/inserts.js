@@ -270,7 +270,7 @@ const insert = async (connection, tabla) => {
 
         //Verificar que idHabitacion exista
 
-        const habitacion = await connection.query(`SELECT * FROM bd2_practica2.habitacion WHERE idHabitacion = ?`, [idHabitacion]);
+        const habitacion = await poolLog.query(`SELECT * FROM bd2_practica2.habitacion WHERE idHabitacion = ?`, [idHabitacion]);
 
         if (habitacion[0].length == 0) {
             console.log(chalk.bgRed.bold("\n---------------- ERROR ----------------"));
@@ -289,7 +289,7 @@ const insert = async (connection, tabla) => {
 
         //Verificar que idPaciente exista
 
-        const paciente = await connection.query(`SELECT * FROM bd2_practica2.paciente WHERE idPaciente = ?`, [idPaciente]);
+        const paciente = await poolLog.query(`SELECT * FROM bd2_practica2.paciente WHERE idPaciente = ?`, [idPaciente]);
 
         if (paciente[0].length == 0) {
             console.log(chalk.bgRed.bold("\n---------------- ERROR ----------------"));
@@ -406,7 +406,7 @@ const insert = async (connection, tabla) => {
 
         //Verificar que idHabitacion exista
 
-        const habitacion = await connection.query(`SELECT * FROM bd2_practica2.habitacion WHERE idHabitacion = ?`, [idHabitacion]);
+        const habitacion = await poolLog.query(`SELECT * FROM bd2_practica2.habitacion WHERE idHabitacion = ?`, [idHabitacion]);
 
         if (habitacion[0].length == 0) {
             console.log(chalk.bgRed.bold("\n---------------- ERROR ----------------"));
